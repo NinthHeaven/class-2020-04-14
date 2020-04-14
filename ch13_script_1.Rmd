@@ -45,6 +45,21 @@ Draw a regression line through this jittered data using `geom_smooth()`.
 
 Discuss whether a linear regression is appropriate for this. Is there a possibility of model predicting greater than 1 or less than 0 probability for `dvote`?
 
+```{r 1, echo=FALSE}
+
+glimpse(nes)
+
+sample_n(nes, size = 8)
+
+ggplot(nes, aes(income, dvote)) +
+  geom_point() +
+  geom_jitter(height = .1, alpha = .2) +
+  geom_smooth(method = "lm", formula = "y ~ x") +
+  labs(x = "Income",
+       y = "Preference for Democratic Candidate")
+```
+
+
 
 # Scene 2
 
@@ -63,6 +78,14 @@ Explain to your non-mathematical boss the relationship between income and prefer
 Optional (very hard!): Interpret the `estimate` for (Intercept). What does it mean? Think back to how we interpreted regression intercepts in the last two weeks. You *might* need to use the `qlogis()` function.
 
 
+```{r scene2, echo=FALSE}
+
+model_1 <- glm(dvote ~ gender + income, data = nes, family = "binomial")
+
+model_1 %>%
+  tidy(conf.int = TRUE) %>%
+  select(term, estimate, conf.low, conf.high)
+```
 
 
 # Scene 3
